@@ -7,6 +7,10 @@ echo "Installing Brew.."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew bundle install
 
+echo "Starting Yabai and Skhd services.."
+brew services start yabai
+brew services start skhd
+
 echo "Installing Oh-My-Zsh.."
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
