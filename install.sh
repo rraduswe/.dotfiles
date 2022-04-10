@@ -3,11 +3,11 @@
 echo "Installing Xcode tools.."
 xcode-select --install
 
-echo "Installing brew.."
+echo "Installing Brew.."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew bundle install
 
-echo "Installing oh-my-zsh.."
+echo "Installing Oh-My-Zsh.."
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 source ~/.zshrc
@@ -41,7 +41,7 @@ echo "Installing vscode Node.js debug adapter.."
 git clone https://github.com/microsoft/vscode-node-debug2.git ~/.config/nvim/dap/vscode-node-debug2
 (cd ~/.config/nvim/dap/vscode-node-debug2 && npm install && npm run build)
 
-echo "Installing OmniSharp.."
+echo "Downloading OmniSharp.."
 curl -L https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.38.2/omnisharp-osx-x64-net6.0.tar.gz \
     --output ~/.config/nvim/lsp/omnisharp/omnisharp.tar.gz \
     --create-dirs
@@ -50,7 +50,7 @@ tar -xvf ~/.config/nvim/lsp/omnisharp/omnisharp.tar.gz \
     --strip=1
 find ~/.config/nvim/lsp/omnisharp | xargs xattr -r -d com.apple.quarantine
 
-echo "Installing .NET debugger.."
+echo "Downloading .NET debugger.."
 curl -L https://github.com/Samsung/netcoredbg/releases/download/2.0.0-895/netcoredbg-osx-amd64.tar.gz \
     --output ~/.config/nvim/dap/netcoredbg/netcoredbg.tar.gz \
     --create-dirs
@@ -62,8 +62,8 @@ echo "Installing JDTLS.."
 git clone https://github.com/eclipse/eclipse.jdt.ls ~/.config/nvim/lsp/jdtls
 (cd ~/.config/nvim/lsp/jdtls && ./mvnw clean install -DskipTests)
 
-echo "Installing Java decompiler.."
-git clone https://github.com/dgileadi/vscode-java-decompiler ~/.config/nvim/lsp/jdtls/vscode-java-decompiler
+echo "Making java_lsp.sh executable.."
+chmod 755 ~/.config/nvim/lsp/jdtls/java_lsp.sh
 
 echo "Installing Java debugger.."
 git clone https://github.com/microsoft/java-debug ~/.config/nvim/lsp/jdtls/java-debug
@@ -73,12 +73,15 @@ echo "Installing Java test runner.."
 git clone https://github.com/microsoft/vscode-java-test ~/.config/nvim/lsp/jdtls/vscode-java-test
 (cd ~/.config/nvim/lsp/jdtls/vscode-java-test && npm install && npm run build-plugin)
 
+echo "Downloading Java decompiler jars.."
+git clone https://github.com/dgileadi/vscode-java-decompiler ~/.config/nvim/lsp/jdtls/vscode-java-decompiler
+
 echo "Downloading Lombok jar.."
 curl -L https://projectlombok.org/downloads/lombok.jar \
     --output ~/.config/nvim/lsp/jdtls/lombok/lombok.jar \
     --create-dirs
 
-echo "Downloading Google Java Format.."
+echo "Downloading Google Java Format jar.."
 curl -L https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar \
     --output ~/.config/nvim/lsp/jdtls/format/google-java-format.jar \
     --create-dirs
