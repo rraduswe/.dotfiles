@@ -9,7 +9,8 @@ eval "$(starship init zsh)"
 alias ls='lsd'
 
 export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$HOME/.cargo/env:$PATH
+export JAVA_HOME="/usr/local/opt/openjdk/"
+export PATH=$GOPATH/bin:$HOME/.cargo/env:$JAVA_HOME/bin:$PATH
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"

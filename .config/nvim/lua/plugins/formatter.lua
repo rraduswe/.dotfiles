@@ -47,6 +47,19 @@ function M.init()
             javascript = {
                 prettier
 		    },
+            java = {
+                function()
+                    return {
+                        exe = "java",
+                        args = {
+                            "-jar",
+                            home .. "/.config/nvim/lsp/jdtls/format/google-java-format.jar",
+                            vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
+                        },
+                        stdin = true
+                    }
+                end
+            },
             json = {
                 prettier
             }
@@ -56,7 +69,7 @@ function M.init()
     vim.api.nvim_exec([[
         augroup FormatAutogroup
             autocmd!
-            autocmd BufWritePost *.go,*.ts,*.js FormatWrite
+            autocmd BufWritePost *.go,*.ts,*.js,*.java FormatWrite
         augroup end
     ]], true)
 end
