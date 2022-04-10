@@ -3,7 +3,7 @@ local M = {}
 function M.init()
     vim.g.kommentary_create_default_mappings = false
 
-    local kommentary = require('kommentary.config')
+    local kommentary = require("kommentary.config")
 
     kommentary.configure_language({ "go", "javascript", "typescript", "cs", "java" }, {
         ignore_whitespace = true,

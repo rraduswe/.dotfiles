@@ -1,16 +1,16 @@
 local M = {}
 
 function M.init()
-    local home = os.getenv('HOME')
-    local formatter = require('formatter')
+    local home = os.getenv("HOME")
+    local formatter = require("formatter")
 
     local prettier = function()
 	    return {
-		    exe = 'prettier',
+		    exe = "prettier",
 			args = {
-                '--stdin-filepath',
+                "--stdin-filepath",
                 vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)),
-                '--single-quote'
+                "--single-quote"
             },
 			stdin = true,
 		}
@@ -22,9 +22,9 @@ function M.init()
             go = {
                 function()
                     return {
-                        exe = 'gofmt',
+                        exe = "gofmt",
                         args = {
-                            '-w',
+                            "-w",
                             vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
                         },
                         stdin = false
@@ -32,9 +32,9 @@ function M.init()
                 end,
                 function()
                     return {
-                        exe = 'goimports',
+                        exe = "goimports",
                         args = {
-                            '-w',
+                            "-w",
                             vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
                         },
                         stdin = false

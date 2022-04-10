@@ -1,8 +1,8 @@
 local M = {}
 
 function M.init()
-    vim.cmd('syntax on')
-    vim.cmd('filetype plugin indent on')
+    vim.cmd("syntax on")
+    vim.cmd("filetype plugin indent on")
 
     vim.o.errorbells = false
     vim.o.swapfile = false
@@ -11,9 +11,9 @@ function M.init()
     vim.o.hlsearch = true
     vim.o.incsearch = true
     vim.o.hidden = true
-    vim.o.fileencoding = 'utf-8'
+    vim.o.fileencoding = "utf-8"
     vim.o.cmdheight = 2
-    vim.o.shortmess = vim.o.shortmess .. 'c'
+    vim.o.shortmess = vim.o.shortmess .. "c"
     vim.o.termguicolors = true
     vim.o.splitright = true
     vim.o.showmode = false
@@ -50,10 +50,10 @@ function M.init()
     vim.g.loaded_tutor_mode_plugin = 1
     vim.g.loaded_remote_plugins    = 1
 
-    vim.cmd('set undodir=~/.config/nvim/undodir')
-    vim.cmd('set undofile')
-    vim.cmd('highlight ColorColumn ctermbg=0 guibg=grey')
-    vim.cmd('set colorcolumn=80')
+    vim.cmd("set undodir=~/.config/nvim/undodir")
+    vim.cmd("set undofile")
+    vim.cmd("highlight ColorColumn ctermbg=0 guibg=grey")
+    vim.cmd("set colorcolumn=80")
 end
 
 return M

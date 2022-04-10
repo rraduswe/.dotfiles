@@ -34,8 +34,8 @@ function M.init()
 
     vim.g.nvim_tree_create_in_closed_folder = 1
 
-    local tree = require('nvim-tree')
-    local events = require('nvim-tree.events')
+    local tree = require("nvim-tree")
+    local events = require("nvim-tree.events")
 
     tree.setup {
         auto_reload_on_write = true,
@@ -69,9 +69,9 @@ function M.init()
         },
         view = {
             width = 40,
-            side = 'left',
+            side = "left",
             auto_resize = false,
-            signcolumn = 'yes',
+            signcolumn = "yes",
             mappings = {
                 custom_only = false,
                 list = {}
@@ -89,7 +89,7 @@ function M.init()
     end)
 
     local map = vim.api.nvim_set_keymap
-    map('n', '<leader>ft', ':NvimTreeToggle<CR>', { noremap = true, silent = false })
+    map("n", "<leader>ft", ":NvimTreeToggle<CR>", { noremap = true, silent = false })
 end
 
 return M

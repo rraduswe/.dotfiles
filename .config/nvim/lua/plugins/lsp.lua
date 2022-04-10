@@ -1,11 +1,11 @@
 local M = {}
 
 function M.init()
-    local home = os.getenv('HOME')
-    local lspconfig = require('lspconfig')
+    local home = os.getenv("HOME")
+    local lspconfig = require("lspconfig")
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
     lspconfig.gopls.setup{
         cmd = { "gopls" },
@@ -18,7 +18,7 @@ function M.init()
     }
 
     lspconfig.tsserver.setup{
-        cmd = { 'typescript-language-server', '--stdio' },
+        cmd = { "typescript-language-server", "--stdio" },
         filetypes = {
             "javascript",
             "javascriptreact",
@@ -45,7 +45,7 @@ function M.init()
         filetypes = { "cs", "vb" },
         on_new_config = function(new_config, new_root_dir)
           if new_root_dir then
-            table.insert(new_config.cmd, '-s')
+            table.insert(new_config.cmd, "-s")
             table.insert(new_config.cmd, new_root_dir)
           end
         end,
@@ -71,20 +71,20 @@ function M.init()
 
     lspconfig.jsonls.setup {}
 
-    local signature = require('lsp_signature')
+    local signature = require("lsp_signature")
     signature.setup({
         bind = true,
         handler_opts = {
-            border = 'single'
+            border = "single"
         }
     })
 
     local map = vim.api.nvim_set_keymap
-    map('n', '<leader>gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = false })
-    map('n', '<leader>gd', '<CMD>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = false })
-    map('n', '<leader>gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', { noremap = true, silent = false })
-    map('n', '<leader>gr', '<CMD>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = false })
-    map('n', '<leader>rr', '<CMD>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = false })
+    map("n", "<leader>gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = false })
+    map("n", "<leader>gd", "<CMD>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = false })
+    map("n", "<leader>gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", { noremap = true, silent = false })
+    map("n", "<leader>gr", "<CMD>lua vim.lsp.buf.references()<CR>", { noremap = true, silent = false })
+    map("n", "<leader>rr", "<CMD>lua vim.lsp.buf.rename()<CR>", { noremap = true, silent = false })
 
     vim.api.nvim_exec([[
         augroup EslintAutogroup

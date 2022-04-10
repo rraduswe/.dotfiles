@@ -1,7 +1,9 @@
 local M = {}
 
 function M.init()
-    require'nvim-treesitter.configs'.setup{
+    local treesitter = require('nvim-treesitter.configs')
+
+    treesitter.setup{
         ensure_installed = 'all',
         ignore_install = { 'haskell' },
         highlight = { enable = true },

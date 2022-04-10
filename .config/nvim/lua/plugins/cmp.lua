@@ -10,17 +10,17 @@ function M.init()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
     end
 
-    local cmp = require('cmp')
-    local types = require('cmp.types')
-    local lspkind = require('lspkind')
-    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+    local cmp = require("cmp")
+    local types = require("cmp.types")
+    local lspkind = require("lspkind")
+    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
     cmp.setup({
         enabled = function()
-            return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt'
+            return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
         end,
         completion = {
-            completeopt = 'menu,menuone,noinsert',
+            completeopt = "menu,menuone,noinsert",
             autocomplete = {
                 types.cmp.TriggerEvent.TextChanged,
             },
@@ -38,8 +38,8 @@ function M.init()
             format = lspkind.cmp_format({ with_text = true })
         },
 	    mapping = {
-            ['<C-Space>'] = cmp.mapping.complete(),
-	        ['<CR>'] = cmp.mapping.confirm({select = true}),
+            ["<C-Space>"] = cmp.mapping.complete(),
+	        ["<CR>"] = cmp.mapping.confirm({select = true}),
 	        ["<Tab>"] = cmp.mapping(function(fallback)
             	if cmp.visible() then
                     cmp.select_next_item()
@@ -53,26 +53,26 @@ function M.init()
 	        end, {"i", "s"}),
 	    },
 	    sources = {
-	        { name = 'nvim_lsp' },
-            { name = 'path' },
-	        { name = 'vsnip' },
-	        { name = 'cmp_tabnine' },
+	        { name = "nvim_lsp" },
+            { name = "path" },
+	        { name = "vsnip" },
+	        { name = "cmp_tabnine" },
 	    }
     })
 
-    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({
+    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({
         map_cr = true, 
         map_complete = true, 
         auto_select = true,
         insert = false,
         map_char = {
-            all = '(',
-            tex = '{'
+            all = "(",
+            tex = "{"
         }
     }))
 
     vim.api.nvim_exec([[
-        autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
+        autocmd FileType TelescopePrompt lua require("cmp").setup.buffer { enabled = false }
     ]], false)
 end
 

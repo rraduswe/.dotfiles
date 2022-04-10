@@ -3,7 +3,7 @@ local M = {}
 function M.init()
     vim.g.dap_virtual_text = true
 
-    local dapui = require('dapui')
+    local dapui = require("dapui")
     dapui.setup({
         icons = { expanded = "▾", collapsed = "▸" },
         mappings = {
@@ -42,7 +42,7 @@ function M.init()
     })
 
     local map = vim.api.nvim_set_keymap
-    map('v', '<leader>de', '<CMD>lua require("dapui").eval()', { noremap = true })
+    map("v", "<leader>de", "<CMD>lua require("dapui").eval()", { noremap = true })
 end
 
 return M
