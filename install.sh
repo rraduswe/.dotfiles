@@ -18,6 +18,9 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 echo "Installing Tmux plugins.."
 ~/.tmux/plugins/tpm/bin/install_plugins
 
+echo "Installing Übersicht Simple-bar.."
+git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ Support/Übersicht/widgets/simple-bar
+
 echo "Installing GO dependencies.."
 go install github.com/go-delve/delve/cmd/dlv@latest
 go install golang.org/x/tools/gopls@latest
