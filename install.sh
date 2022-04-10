@@ -15,6 +15,9 @@ source ~/.zshrc
 echo "Installing Tmux plugin manager.."
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+echo "Installing Tmux plugins.."
+~/.tmux/plugins/tpm/bin/install_plugins
+
 echo "Installing GO dependencies.."
 go install github.com/go-delve/delve/cmd/dlv@latest
 go install golang.org/x/tools/gopls@latest
@@ -25,6 +28,11 @@ go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
 echo "Installing Node.js dependencies.."
 nvm install --lts
 npm install -g typescript typescript-language-server vscode-langservers-extracted @tailwindcss/language-server
+
+echo "Creating Neovim undodir, lsp and dap folders.."
+mkdir ~/.config/nvim/undodir
+mkdir ~/.config/nvim/lsp
+mkdir ~/.config/nvim/dap
 
 echo "Installing vscode GO debug adapter.."
 git clone https://github.com/golang/vscode-go ~/.config/nvim/dap/vscode-go
