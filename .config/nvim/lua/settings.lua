@@ -32,8 +32,6 @@ function M.init()
     vim.opt.smartindent = true
     vim.opt.expandtab = true 
     vim.opt.lazyredraw = true
-    vim.opt.list = true
-    vim.opt.listchars:append("space:⋅")
 
     vim.g.loaded_matchparen        = 1
     vim.g.loaded_matchit           = 1

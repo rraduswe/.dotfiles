@@ -109,7 +109,7 @@ function M.setup()
     end
 
     local map = vim.api.nvim_buf_set_keymap
-    map(0, "n", "<leader>ca", "<CMD>lua require("jdtls").code_action()<CR>", { noremap = true, silent = true })
+    map(0, "n", "<leader>ca", "<CMD>lua require(\"jdtls\").code_action()<CR>", { noremap = true, silent = true })
 
     require("jdtls").start_or_attach(config)
 end

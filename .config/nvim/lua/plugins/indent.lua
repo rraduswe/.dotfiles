@@ -1,6 +1,9 @@
 local M = {}
 
 function M.init()
+    vim.opt.list = true
+    vim.opt.listchars:append("space:⋅")
+
     local indent = require("indent_blankline")
 
     indent.setup{

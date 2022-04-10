@@ -1,3 +1,3 @@
-require('plugins').init()
-require('settings').init()
-require('mappings').init()
+require("plugins").init()
+require("settings").init()
+require("mappings").init()

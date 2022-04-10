@@ -17,10 +17,7 @@ function M.init()
             elements = {
                 { id = "stacks", size = 0.25 },
                 { id = "breakpoints", size = 0.25 },
-                {
-                    id = "scopes",
-                    size = 0.25
-                },
+                { id = "scopes", size = 0.25 },
                 { id = "watches", size = 00.25 }
             },
             size = 40,
@@ -42,7 +39,7 @@ function M.init()
     })
 
     local map = vim.api.nvim_set_keymap
-    map("v", "<leader>de", "<CMD>lua require("dapui").eval()", { noremap = true })
+    map("v", "<leader>de", "<CMD>lua require(\"dapui\").eval()", { noremap = true })
 end
 
 return M
