@@ -27,7 +27,7 @@ function M.init()
                             "-w",
                             vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
                         },
-                        stdin = false
+                        stdin = true
                     }
                 end,
                 function()
@@ -37,7 +37,7 @@ function M.init()
                             "-w",
                             vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
                         },
-                        stdin = false
+                        stdin = true
                     }
                 end
             },

@@ -37,6 +37,7 @@ function M.init()
     map('n', '<leader>fs', '<CMD>lua require("telescope.builtin").live_grep()<CR>', { noremap = true })
     map('n', '<leader>fb', '<CMD>lua require("telescope.builtin").buffers()<CR>', { noremap = true })
     map('n', '<leader>fh', '<CMD>lua require("telescope.builtin").help_tags()<CR>', { noremap = true })
+    map('n', '<leader>fd', '<CMD>lua require("telescope.builtin").diagnostics()<CR>', { noremap = true })
 end
 
 return M

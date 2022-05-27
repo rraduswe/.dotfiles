@@ -4,10 +4,25 @@ function M.init()
     local home = os.getenv("HOME")
     local lspconfig = require("lspconfig")
 
+    local on_attach = function(client, bufnr)
+        local map = vim.api.nvim_buf_set_keymap
+        map(bufnr, "n", "<leader>gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>gd", "<CMD>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>gt", "<CMD>lua vim.lsp.buf.type_definition()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>gj", "<CMD>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>gk", "<CMD>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>gr", "<CMD>lua vim.lsp.buf.references()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>rr", "<CMD>lua vim.lsp.buf.rename()<CR>", { noremap = true, silent = false })
+        map(bufnr, "n", "<leader>h", "<CMD>lua vim.lsp.buf.hover()<CR>", { noremap = true, silent = true })
+    end
+
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
     lspconfig.gopls.setup{
+        on_attach = on_attach,
+        autostart = true,
         cmd = { "gopls" },
         settings = { gopls = { analyses = { unusedparams = true }, staticcheck = true } },
         init_options = { usePlaceholders = true, completeUnimported = true },
@@ -18,6 +33,7 @@ function M.init()
     }
 
     lspconfig.tsserver.setup{
+        on_attach = on_attach,
         cmd = { "typescript-language-server", "--stdio" },
         filetypes = {
             "javascript",
@@ -36,6 +52,7 @@ function M.init()
 
     local omnisharp_cmd = home .. "/.config/nvim/lsp/omnisharp/run"
     lspconfig.omnisharp.setup{
+        on_attach = on_attach,
         cmd = {
             omnisharp_cmd,
             "--languageserver",
@@ -54,6 +71,7 @@ function M.init()
     }
 
     lspconfig.rust_analyzer.setup{
+        on_attach = on_attach,
         cmd = { "rust-analyzer" },
         filetypes = { "rust", "rs" },
         root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json"),
@@ -78,13 +96,6 @@ function M.init()
             border = "single"
         }
     })
-
-    local map = vim.api.nvim_set_keymap
-    map("n", "<leader>gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = false })
-    map("n", "<leader>gd", "<CMD>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = false })
-    map("n", "<leader>gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", { noremap = true, silent = false })
-    map("n", "<leader>gr", "<CMD>lua vim.lsp.buf.references()<CR>", { noremap = true, silent = false })
-    map("n", "<leader>rr", "<CMD>lua vim.lsp.buf.rename()<CR>", { noremap = true, silent = false })
 
     vim.api.nvim_exec([[
         augroup EslintAutogroup
