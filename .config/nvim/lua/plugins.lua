@@ -75,7 +75,7 @@ local function packer_setup()
             end
         }
 
-	    use { "neovim/nvim-lspconfig", event = "BufRead" }
+	    use { "neovim/nvim-lspconfig" }
         use { "hrsh7th/cmp-nvim-lsp" }
 	    use {
 	        "tzachar/cmp-tabnine",

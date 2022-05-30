@@ -1,44 +1,12 @@
 local M = {}
 
 function M.init()
-    vim.g.nvim_tree_show_icons = {
-	    git = 1,
-    	folders = 1,
-    	files = 1,
-    	folder_arrows = 1
-    }
-
-    vim.g.nvim_tree_icons = {
-        default = "",
-        symlink = "",
-        git = {
-            unstaged = "✗",
-            staged = "✓",
-            unmerged = "",
-            renamed = "➜",
-            untracked = "★",
-            deleted = "",
-            ignored = "◌"
-        },
-        folder = {
-            arrow_open = "",
-            arrow_closed = "",
-            default = "",
-            open = "",
-            empty = "", -- 
-            empty_open = "",
-            symlink = "",
-            symlink_open = ""
-        }
-    }
-
-    vim.g.nvim_tree_create_in_closed_folder = 1
-
     local tree = require("nvim-tree")
     local events = require("nvim-tree.events")
 
     tree.setup {
         auto_reload_on_write = true,
+        create_in_closed_folder = false,
         disable_netrw = true,
         hijack_netrw = true,
         hijack_cursor = true,
@@ -77,11 +45,61 @@ function M.init()
                 list = {}
             }
         },
+        renderer = {
+            add_trailing = false,
+            group_empty = false,
+            highlight_git = false,
+            highlight_opened_files = "none",
+            root_folder_modifier = ":~",
+            indent_markers = {
+                enable = true,
+                icons = {
+                    corner = "└ ",
+                    edge = "│ ",
+                    none = "  ",
+                },
+            },
+            icons = {
+                webdev_colors = true,
+                git_placement = "before",
+                padding = " ",
+                symlink_arrow = " ➛ ",
+                show = {
+                    file = true,
+                    folder = true,
+                    folder_arrow = true,
+                    git = true,
+                },
+                glyphs = {
+                    default = "",
+                    symlink = "",
+                    folder = {
+                        arrow_closed = "",
+                        arrow_open = "",
+                        default = "",
+                        open = "",
+                        empty = "",
+                        empty_open = "",
+                        symlink = "",
+                        symlink_open = "",
+                    },
+                    git = {
+                        unstaged = "✗",
+                        staged = "✓",
+                        unmerged = "",
+                        renamed = "➜",
+                        untracked = "★",
+                        deleted = "",
+                        ignored = "◌",
+                    },
+                },
+            },
+        },
         actions = {
             open_file = {
                 quit_on_open = true
             }
-        }
+        },
     }
 
     events.on_nvim_tree_ready(function()

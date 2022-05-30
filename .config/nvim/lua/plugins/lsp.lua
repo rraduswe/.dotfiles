@@ -14,7 +14,7 @@ function M.init()
         map(bufnr, "n", "<leader>gk", "<CMD>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = false })
         map(bufnr, "n", "<leader>gr", "<CMD>lua vim.lsp.buf.references()<CR>", { noremap = true, silent = false })
         map(bufnr, "n", "<leader>rr", "<CMD>lua vim.lsp.buf.rename()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>h", "<CMD>lua vim.lsp.buf.hover()<CR>", { noremap = true, silent = true })
+        map(bufnr, "n", "<leader>gh", "<CMD>lua vim.lsp.buf.hover()<CR>", { noremap = true, silent = true })
     end
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
