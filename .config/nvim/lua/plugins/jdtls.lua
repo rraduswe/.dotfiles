@@ -1,6 +1,4 @@
-local M = {}
-
-local function jdtls_on_attach(client, bufnr)
+local function on_attach(client, bufnr)
     require("jdtls").setup_dap({ hotcodereplace = "auto" })
     require("jdtls").setup_dap_main_class_configs()
     require("jdtls.setup").add_commands()
@@ -9,12 +7,12 @@ local function jdtls_on_attach(client, bufnr)
     signature.on_attach({
         bind = true,
         handler_opts = {
-            border = "single"
+            border = "rounded"
         }
     }, bufnr)
 end
 
-function M.setup()
+function start_jdtls()
     local home = os.getenv("HOME")
     local root_markers = {".git", "pom.xml"}
     local root_dir = require("jdtls.setup").find_root(root_markers)
@@ -35,8 +33,8 @@ function M.setup()
     local workspace_folder = home .. "/workspace"
     local config = {
         flags = {
-          allow_incremental_sync = true,
-        };
+            allow_incremental_sync = true,
+        },
         capabilities = capabilities,
         on_attach = on_attach,
         filetypes = { "java" },
@@ -57,7 +55,14 @@ function M.setup()
                     "java.util.Objects.requireNonNull",
                     "java.util.Objects.requireNonNullElse",
                     "org.mockito.Mockito.*"
-                }
+                },
+                filteredTypes = {
+                    "com.sun.*",
+                    "io.micrometer.shaded.*",
+                    "java.awt.*",
+                    "jdk.*",
+                    "sun.*",
+                },
             };
             sources = {
                 organizeImports = {
@@ -68,14 +73,18 @@ function M.setup()
             codeGeneration = {
                 toString = {
                     template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
-                }
+                },
+                hashCodeEquals = {
+                    useJava7Objects = true,
+                },
+                useBlocks = true,
             };
         };
     }
 
     config.cmd = { home .. "/.config/nvim/lsp/jdtls/java-lsp.sh", workspace_folder }
     config.root_dir = root_dir
-    config.on_attach = jdtls_on_attach
+    config.on_attach = on_attach
     config.on_init = function(client, _)
         client.notify("workspace/didChangeConfiguration", { settings = config.settings })
     end
@@ -114,13 +123,11 @@ function M.setup()
     require("jdtls").start_or_attach(config)
 end
 
-function M.init()
-    vim.api.nvim_exec([[
-        augroup jdtls_lsp
-            autocmd!
-            autocmd FileType java lua require("plugins.jdtls").setup()
-        augroup end
-    ]], true)
-end
 
-return M
+vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup('StartJdtls', {
+        clear = true
+    }),
+    pattern = '*.java',
+    callback = start_jdtls
+})

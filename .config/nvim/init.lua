@@ -1,5 +1,3 @@
-require("plugins").init()
-require("settings").init()
-require("mappings").init()
-
-vim.cmd("autocmd VimEnter * doautocmd FileType")
+require("settings")
+require("mappings")
+require("plugins")

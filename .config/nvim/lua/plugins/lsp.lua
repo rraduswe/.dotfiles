@@ -1,109 +1,113 @@
-local M = {}
+local lspconfig = require("lspconfig")
 
-function M.init()
-    local home = os.getenv("HOME")
-    local lspconfig = require("lspconfig")
+local home = os.getenv("HOME")
 
-    local on_attach = function(client, bufnr)
-        local map = vim.api.nvim_buf_set_keymap
-        map(bufnr, "n", "<leader>gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gd", "<CMD>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gt", "<CMD>lua vim.lsp.buf.type_definition()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gj", "<CMD>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gk", "<CMD>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gr", "<CMD>lua vim.lsp.buf.references()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>rr", "<CMD>lua vim.lsp.buf.rename()<CR>", { noremap = true, silent = false })
-        map(bufnr, "n", "<leader>gh", "<CMD>lua vim.lsp.buf.hover()<CR>", { noremap = true, silent = true })
-    end
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+local on_attach = function(client, bufnr)
+    local opts = { buffer = 0 }
 
-    lspconfig.gopls.setup{
-        on_attach = on_attach,
-        autostart = true,
-        cmd = { "gopls" },
-        settings = { gopls = { analyses = { unusedparams = true }, staticcheck = true } },
-        init_options = { usePlaceholders = true, completeUnimported = true },
-        filetypes = { "go", "gomod" },
-        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
-        single_file_support = true,
-        capabilities = capabilities
-    }
+    vim.keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<leader>gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<leader>gh", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>gs", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-    lspconfig.tsserver.setup{
-        on_attach = on_attach,
-        cmd = { "typescript-language-server", "--stdio" },
-        filetypes = {
-            "javascript",
-            "javascriptreact",
-            "javascript.jsx",
-            "typescript",
-            "typescriptreact",
-            "typescript.tsx"
-        },
-        init_options = {
-            hostInfo = "neovim"
-        },
-        root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
-        capabilities = capabilities
-    }
-
-    local omnisharp_cmd = home .. "/.config/nvim/lsp/omnisharp/run"
-    lspconfig.omnisharp.setup{
-        on_attach = on_attach,
-        cmd = {
-            omnisharp_cmd,
-            "--languageserver",
-            "--hostPID",
-            tostring(vim.fn.getpid())
-        },
-        filetypes = { "cs", "vb" },
-        on_new_config = function(new_config, new_root_dir)
-          if new_root_dir then
-            table.insert(new_config.cmd, "-s")
-            table.insert(new_config.cmd, new_root_dir)
-          end
-        end,
-        root_dir = lspconfig.util.root_pattern(".git", "*.sln"),
-        capabilities = capabilities
-    }
-
-    lspconfig.rust_analyzer.setup{
-        on_attach = on_attach,
-        cmd = { "rust-analyzer" },
-        filetypes = { "rust", "rs" },
-        root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json"),
-        settings = {
-            ["rust-analyzer"] = {}
-        },
-        capabilities = capabilities
-    }
-
-    lspconfig.tailwindcss.setup{}
-
-    lspconfig.eslint.setup{}
-
-    lspconfig.golangci_lint_ls.setup{}
-
-    lspconfig.jsonls.setup {}
-
-    local signature = require("lsp_signature")
-    signature.setup({
-        bind = true,
-        handler_opts = {
-            border = "single"
-        }
-    })
-
-    vim.api.nvim_exec([[
-        augroup EslintAutogroup
-            autocmd!
-            autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx EslintFixAll
-        augroup end
-    ]], true)
-
+    vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, opts)
 end
 
-return M
+lspconfig.gopls.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    autostart = true,
+    cmd = { "gopls" },
+    settings = {
+        gopls = {
+            experimentalPostfixCompletions = true,
+            analyses = {
+                unusedParams = true,
+                shadow = true
+            },
+            staticcheck = true
+        }
+    },
+    init_options = {
+        usePlaceholders = true,
+        completeUnimported = true
+    },
+    filetypes = { "go", "gomod" },
+    root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+    single_file_support = true,
+}
+
+lspconfig.tsserver.setup{
+    on_attach = on_attach,
+    cmd = { "typescript-language-server", "--stdio" },
+    filetypes = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx"
+    },
+    init_options = {
+        hostInfo = "neovim"
+    },
+    root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+    capabilities = capabilities
+}
+
+local omnisharp_cmd = home .. "/.config/nvim/lsp/omnisharp/run"
+lspconfig.omnisharp.setup{
+    on_attach = on_attach,
+    cmd = {
+        omnisharp_cmd,
+        "--languageserver",
+        "--hostPID",
+        tostring(vim.fn.getpid())
+    },
+    filetypes = { "cs", "vb" },
+    on_new_config = function(new_config, new_root_dir)
+        if new_root_dir then
+            table.insert(new_config.cmd, "-s")
+            table.insert(new_config.cmd, new_root_dir)
+        end
+    end,
+    root_dir = lspconfig.util.root_pattern(".git", "*.sln"),
+    capabilities = capabilities
+}
+
+lspconfig.rust_analyzer.setup{
+    on_attach = on_attach,
+    cmd = { "rust-analyzer" },
+    filetypes = { "rust", "rs" },
+    root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json"),
+    settings = {
+        ["rust-analyzer"] = {}
+    },
+    capabilities = capabilities
+}
+
+lspconfig.tailwindcss.setup{}
+
+lspconfig.eslint.setup{}
+
+lspconfig.golangci_lint_ls.setup{}
+
+lspconfig.jsonls.setup {}
+
+
+local signature = require("lsp_signature")
+signature.setup({
+    bind = true,
+    handler_opts = {
+        border = "rounded"
+    }
+})
