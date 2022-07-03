@@ -1,0 +1,14 @@
+---
+- name: Install zsh
+  homebrew:
+    name: zsh
+    state: present
+
+- name: Install Oh-My-Zsh
+  command: "sh -c '$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'"
+
+- name: Symlink conf
+  file:
+    src: ".zshrc"
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    state: link

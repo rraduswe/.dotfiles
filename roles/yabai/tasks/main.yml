@@ -1,0 +1,14 @@
+---
+- name: Install
+  homebrew:
+    name: koekeishiya/formulae/yabai
+    state: present
+
+- name: Symlink conf
+  file:
+    src: ".yabairc"
+    dest: "{{ ansible_user_dir }}/.yabairc"
+    state: link
+
+- name: Start service
+  command: brew services start yabai

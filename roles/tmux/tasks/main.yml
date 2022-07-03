@@ -1,0 +1,15 @@
+---
+- name: Clone TPM
+  git:
+    repo: "https://github.com/tmux-plugins/tpm"
+    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    version: master
+
+- name: Symlink conf
+  file:
+    src: ".tmux.conf"
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    state: link
+
+- name: Install plugins
+  command: sh ~/.tmux/plugins/tpm/bin/install_plugins

@@ -1,0 +1,17 @@
+---
+- name: Install
+  homebrew_cask:
+    name: ubersicht
+    state: present
+
+- name: Clone simple-bar
+  git:
+    repo: "https://github.com/Jean-Tinland/simple-bar"
+    dest: "{{ ansible_user_dir }}/Library/Application Support/Übersicht/widgets/simple-bar"
+    version: master
+
+- name: Symlink conf
+  file:
+    src: ".simplebarrc"
+    dest: "{{ ansible_user_dir }}/.simplebarrc"
+    state: link

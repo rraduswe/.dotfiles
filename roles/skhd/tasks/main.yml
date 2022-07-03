@@ -1,0 +1,14 @@
+---
+- name: Install
+  homebrew:
+    name: koekeishiya/formulae/skhd
+    state: present
+
+- name: Symlink conf
+  file:
+    src: ".skhdrc"
+    dest: "{{ ansible_user_dir }}/.skhdrc"
+    state: link
+
+- name: Start service
+  command: brew services start skhd

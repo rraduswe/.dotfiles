@@ -1,0 +1,163 @@
+---
+- name: Install
+  homebrew_cask:
+    name: neovim
+    state: present
+
+- name: Create .config/nvim folder
+  file:
+    path: "{{ ansible_user_dir }}/.config/nvim"
+    mode: 0755
+    state: directory
+
+- name: Symlink conf
+  file:
+    src: "{{ role_path }}/files/"
+    dest: "{{ ansible_user_dir }}/.config/nvim/"
+    state: link
+
+- name: Creating undodir folder
+  file:
+    path: "{{ ansible_user_dir }}/.config/nvim/undodir"
+    mode: 0755
+    state: directory
+
+- name: Creating dap folder
+  file:
+    path: "{{ role_path }}/files/dap"
+    mode: 0755
+    state: directory
+
+- name: Install Go Delve
+  command: "go install github.com/go-delve/delve/cmd/dlv@latest"
+
+- name: Install Go Pls
+  command: "go install golang.org/x/tools/gopls@latest"
+
+- name: Install Go Imports
+  command: "go install golang.org/x/tools/cmd/goimports@latest"
+
+- name: Install Golangci Lint Langserver
+  command: "go install github.com/nametake/golangci-lint-langserver@latest"
+
+- name: Install Golangci Lint
+  command: "go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.46.2"
+
+- name: Install Node Typescript Langserver
+  command: "npm install -g typescript-language-server"
+
+- name: Install Vscode extracted Langservers
+  command: "npm install -g vscode-langservers-extracted"
+
+- name: Install Tailwindcss Langserver
+  command: "npm install -g @tailwindcss/language-server"
+
+- name: Clone Go debug adapter
+  git:
+    repo: "https://github.com/golang/vscode-go"
+    dest: "{{ role_path }}/files/dap/vscode-go"
+    version: master
+
+- name: Install Go debug adapter deps
+  command:
+    chdir: "{{ role_path }}/files/dap/vscode-go"
+    cmd: "npm install"
+
+- name: Build Go debug adapter
+  command:
+    chdir: "{{ role_path }}/files/dap/vscode-go"
+    cmd: "npm run build"
+
+- name: Clone Nodejs debug adapter
+  git:
+    repo: "https://github.com/microsoft/vscode-node-debug2.git"
+    dest: "{{ role_path }}/files/dap/vscode-node-debug2"
+    version: master
+
+- name: Install Nodejs debug adapter deps
+  command:
+    chdir: "{{ role_path }}/files/dap/vscode-node-debug2"
+    cmd: "npm install"
+
+- name: Build Nodejs debug adapter
+  command:
+    chdir: "{{ role_path }}/files/dap/vscode-node-debug2"
+    cmd: "npm run build"
+
+- name: Download and unarchive OmniSharp
+  unarchive:
+    src: "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.38.2/omnisharp-osx-x64-net6.0.tar.gz"
+    dest: "{{ role_path }}/files/lsp/omnisharp"
+    remote_src: yes
+    extra_opts: "--strip=1"
+
+- name: Remove OmniSharp quarantine
+  command:
+    chdir: "{{ role_path }}/files/lsp/omnisharp"
+    cmd: "find {{ role_path }}/files/lsp/omnisharp | xargs xattr -r -d com.apple.quarantine"
+
+- name: Download and unarchive .NET debugger
+  unarchive:
+    src: "https://github.com/Samsung/netcoredbg/releases/download/2.0.0-895/netcoredbg-osx-amd64.tar.gz"
+    dest: "{{ role_path }}/files/dap/netcoredbg"
+    remote_src: yes
+    extra_opts: "--strip=1"
+
+- name: Clone JDTLS
+  git:
+    repo: "https://github.com/eclipse/eclipse.jdt.ls"
+    dest: "{{ role_path }}/files/lsp/jdtls"
+    version: master
+
+- name: Install deps and build JDTLS
+  command:
+    chdir: "{{ role_path }}/files/lsp/jdtls"
+    cmd: "./mvnw clean install -DskipTests"
+
+- name: Give permissions to java_lsp.sh
+  file:
+    path: "{{ role_path }}/files/lsp/jdtls/java_lsp.sh"
+    mode: 0755
+
+- name: Clone Java debugger
+  git:
+    repo: "https://github.com/microsoft/java-debug"
+    dest: "{{ role_path }}/files/lsp/jdtls/java-debug"
+    version: master
+
+- name: Install deps and build Java debugger
+  command:
+    chdir: "{{ role_path }}/files/lsp/jdtls/java-debug"
+    cmd: "./mvnw clean install"
+
+- name: Clone Java test runner
+  git:
+    repo: "https://github.com/microsoft/vscode-java-test"
+    dest: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
+    version: master
+
+- name: Install Java test runner deps
+  command:
+    chdir: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
+    cmd: "npm install"
+
+- name: Build Java test runner
+  command:
+    chdir: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
+    cmd: "npm run build-plugin"
+
+- name: Clone Java decompiler jars
+  git:
+    repo: "https://github.com/dgileadi/vscode-java-decompiler"
+    dest: "{{ role_path }}/files/lsp/jdtls/vscode-java-decompiler"
+    version: master
+
+- name: Download Java Lombok jar
+  get_url:
+    url: "https://projectlombok.org/downloads/lombok.jar"
+    dest: "{{ role_path }}/files/lsp/jdtls/lombok/lombok.jar"
+
+- name: Download Google Java Format jar
+  get_url:
+    url: "https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar"
+    dest: "{{ role_path }}/files/lsp/jdtls/format/google-java-format.jar"

@@ -1,0 +1,123 @@
+---
+- name: Tapping koekeishiya
+  homebrew_tap:
+    name: koekeishiya/formulae
+    state: present
+
+- name: Install editorconfig
+  homebrew:
+    name: editorconfig
+    state: present
+
+- name: Install fzf
+  homebrew:
+    name: fzf
+    state: present
+
+- name: Install go
+  homebrew:
+    name: go
+    state: present
+
+- name: Install golang-migrate
+  homebrew:
+    name: golang-migrate
+    state: present
+
+- name: Install helm
+  homebrew:
+    name: helm
+    state: present
+
+- name: Install htop
+  homebrew:
+    name: htop
+    state: present
+
+- name: Install jq
+  homebrew:
+    name: jq
+    state: present
+
+- name: Install kompose
+  homebrew:
+    name: kompose
+    state: present
+
+- name: Install librdkafka
+  homebrew:
+    name: librdkafka
+    state: present
+
+- name: Install lsd
+  homebrew:
+    name: lsd
+    state: present
+
+- name: Install maven
+  homebrew:
+    name: maven
+    state: present
+
+- name: Install neofetch
+  homebrew:
+    name: neofetch
+    state: present
+
+- name: Install nvm
+  homebrew:
+    name: nvm
+    state: present
+
+- name: Install ripgrep
+  homebrew:
+    name: ripgrep
+    state: present
+
+- name: Install rust-analyzer
+  homebrew:
+    name: rust-analyzer
+    state: present
+
+- name: Install rustup-init
+  homebrew:
+    name: rustup-init
+    state: present
+
+- name: Install starship
+  homebrew:
+    name: starship
+    state: present
+
+- name: Install discord
+  homebrew_cask:
+    name: discord
+    state: present
+
+- name: Install dotnet sdk
+  homebrew_cask:
+    name: dotnet-sdk
+    state: present
+
+- name: Install docker
+  homebrew_cask:
+    name: docker
+    state: present
+
+- name: Install font-hack-nerd-font
+  homebrew_cask:
+    name: font-hack-nerd-font
+    state: present
+
+- name: Install postman
+  homebrew_cask:
+    name: postman
+    state: present
+
+- name: Install temurin
+  homebrew_cask:
+    name: temurin
+    state: present
+
+- name: Install node lts
+  command: "nvm install --lts"
