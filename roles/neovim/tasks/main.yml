@@ -86,7 +86,7 @@
 
 - name: Download and unarchive OmniSharp
   unarchive:
-    src: "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.38.2/omnisharp-osx-x64-net6.0.tar.gz"
+    src: "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.0/omnisharp-osx-x64-net6.0.tar.gz"
     dest: "{{ role_path }}/files/lsp/omnisharp"
     remote_src: yes
     extra_opts: "--strip=1"
@@ -98,7 +98,7 @@
 
 - name: Download and unarchive .NET debugger
   unarchive:
-    src: "https://github.com/Samsung/netcoredbg/releases/download/2.0.0-895/netcoredbg-osx-amd64.tar.gz"
+    src: "https://github.com/Samsung/netcoredbg/releases/download/2.0.0-915/netcoredbg-osx-amd64.tar.gz"
     dest: "{{ role_path }}/files/dap/netcoredbg"
     remote_src: yes
     extra_opts: "--strip=1"
