@@ -6,7 +6,7 @@
 
 - name: Create folders
   file:
-    path: "{{ ansible_user_dir/item }}"
+    path: "{{ ansible_user_dir + '/' + item }}"
     mode: 0755
     state: directory
   loop:
@@ -14,6 +14,8 @@
     - ".config/nvim/undodir"
     - ".config/nvim/lsp"
     - ".config/nvim/lsp/omnisharp"
+    - ".config/nvim/lsp/jdtls/lombok"
+    - ".config/nvim/lsp/jdtls/format"
     - ".config/nvim/dap"
     - ".config/nvim/dap/netcoredbg"
 
@@ -44,7 +46,7 @@
 - name: Clone go debug adapter
   git:
     repo: "https://github.com/golang/vscode-go"
-    dest: "{{ andible_user_dir }}/.config/nvim/dap/vscode-go"
+    dest: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-go"
   register: vscodego_clone
   failed_when:
     - vscodego_clone.failed
@@ -52,12 +54,12 @@
 
 - name: Install go debug adapter deps
   command:
-    chdir: "{{ andible_user_dir }}/.config/nvim/dap/vscode-go"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-go"
     cmd: "npm install"
 
 - name: Build go debug adapter
   command:
-    chdir: "{{ andible_user_dir }}/.config/nvim/dap/vscode-go"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-go"
     cmd: "npm run bundle"
 
 - name: Clone nodejs debug adapter
@@ -104,7 +106,7 @@
 
 - name: Install deps and build eclipse.jdt.ls
   command:
-    chdir: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/eclipse"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/eclipse"
     cmd: "./mvnw clean verify -DskipTests=true"
 
 - name: Clone java-debug
