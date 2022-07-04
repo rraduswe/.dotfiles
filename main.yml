@@ -2,11 +2,4 @@
 - hosts: localhost
   connection: local
   roles:
-    - misc
-    - kitty
-    - zsh
-    - tmux
     - neovim
-    - skhd
-    - yabai
-    - ubersicht

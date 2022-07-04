@@ -9,7 +9,6 @@ eval "$(starship init zsh)"
 alias ls='lsd'
 
 export GOPATH=$HOME/go
-export JAVA_HOME="/usr/local/opt/openjdk/"
 export PATH=$GOPATH/bin:$HOME/.cargo/env:$JAVA_HOME/bin:$PATH
 
 export NVM_DIR="$HOME/.nvm"
@@ -83,3 +82,7 @@ auto-switch-node-version() {
 autoload -U add-zsh-hook
 add-zsh-hook chpwd auto-switch-node-version
 auto-switch-node-version
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

@@ -5,7 +5,7 @@ xcode-select --install
 
 if ! [ -x "$(command -v brew)" ]; then
     echo "Installing Brew.."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 if ! [ -x "$(command -v ansible)" ]; then

@@ -1,4 +1,9 @@
 ---
+- name: Install
+  homebrew:
+    name: tmux
+    state: present
+
 - name: Clone TPM
   git:
     repo: "https://github.com/tmux-plugins/tpm"
@@ -7,9 +12,9 @@
 
 - name: Symlink conf
   file:
-    src: ".tmux.conf"
+    src: "{{ role_path }}/files/.tmux.conf"
     dest: "{{ ansible_user_dir }}/.tmux.conf"
     state: link
 
 - name: Install plugins
-  command: sh ~/.tmux/plugins/tpm/bin/install_plugins
+  shell: sh "{{ ansible_user_dir }}/.tmux/plugins/tpm/bin/install_plugins"

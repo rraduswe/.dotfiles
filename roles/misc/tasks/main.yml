@@ -4,6 +4,11 @@
     name: koekeishiya/formulae
     state: present
 
+- name: Tapping cask-fonts
+  homebrew_tap:
+    name: homebrew/cask-fonts
+    state: present
+
 - name: Install editorconfig
   homebrew:
     name: editorconfig
@@ -12,6 +17,11 @@
 - name: Install fzf
   homebrew:
     name: fzf
+    state: present
+
+- name: Install GNU tar
+  homebrew:
+    name: gnu-tar
     state: present
 
 - name: Install go
@@ -118,6 +128,3 @@
   homebrew_cask:
     name: temurin
     state: present
-
-- name: Install node lts
-  command: "nvm install --lts"

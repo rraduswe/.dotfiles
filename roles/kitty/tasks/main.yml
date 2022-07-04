@@ -6,12 +6,12 @@
 
 - name: Create .config/kitty folder
   file:
-    path: "{{ ansible_user_dir }}/.config/kitty"
-    mode: 0755
+    path: "{{ ansible_user_dir }}/.config/kitty/"
+    mode: "0755"
     state: directory
 
 - name: Symlink conf
   file:
-    src: "kitty.conf"
+    src: "{{ role_path}}/files/kitty.conf"
     dest: "{{ ansible_user_dir }}/.config/kitty/kitty.conf"
     state: link

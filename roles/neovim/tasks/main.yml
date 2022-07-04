@@ -1,6 +1,6 @@
 ---
 - name: Install
-  homebrew_cask:
+  homebrew:
     name: neovim
     state: present
 
@@ -9,12 +9,6 @@
     path: "{{ ansible_user_dir }}/.config/nvim"
     mode: 0755
     state: directory
-
-- name: Symlink conf
-  file:
-    src: "{{ role_path }}/files/"
-    dest: "{{ ansible_user_dir }}/.config/nvim/"
-    state: link
 
 - name: Creating undodir folder
   file:
@@ -57,6 +51,10 @@
     repo: "https://github.com/golang/vscode-go"
     dest: "{{ role_path }}/files/dap/vscode-go"
     version: master
+  register: vscodego_clone
+  failed_when:
+    - vscodego_clone.failed
+    - not 'Local modifications exist' in vscodego_clone.msg
 
 - name: Install Go debug adapter deps
   command:
@@ -66,13 +64,17 @@
 - name: Build Go debug adapter
   command:
     chdir: "{{ role_path }}/files/dap/vscode-go"
-    cmd: "npm run build"
+    cmd: "npm run bundle"
 
 - name: Clone Nodejs debug adapter
   git:
     repo: "https://github.com/microsoft/vscode-node-debug2.git"
     dest: "{{ role_path }}/files/dap/vscode-node-debug2"
-    version: master
+    version: main
+  register: vscodenodedebug2_clone
+  failed_when:
+    - vscodenodedebug2_clone.failed
+    - not 'Local modifications exist' in vscodenodedebug2_clone.msg
 
 - name: Install Nodejs debug adapter deps
   command:
@@ -84,6 +86,12 @@
     chdir: "{{ role_path }}/files/dap/vscode-node-debug2"
     cmd: "npm run build"
 
+- name: Create OmniSharp folder
+  file:
+    path: "{{ role_path }}/files/lsp/omnisharp"
+    mode: 0755
+    state: directory
+
 - name: Download and unarchive OmniSharp
   unarchive:
     src: "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.0/omnisharp-osx-x64-net6.0.tar.gz"
@@ -91,10 +99,11 @@
     remote_src: yes
     extra_opts: "--strip=1"
 
-- name: Remove OmniSharp quarantine
-  command:
-    chdir: "{{ role_path }}/files/lsp/omnisharp"
-    cmd: "find {{ role_path }}/files/lsp/omnisharp | xargs xattr -r -d com.apple.quarantine"
+- name: Create .NET debugger folder
+  file:
+    path: "{{ role_path }}/files/dap/netcoredbg"
+    mode: 0755
+    state: directory
 
 - name: Download and unarchive .NET debugger
   unarchive:
@@ -106,13 +115,17 @@
 - name: Clone JDTLS
   git:
     repo: "https://github.com/eclipse/eclipse.jdt.ls"
-    dest: "{{ role_path }}/files/lsp/jdtls"
+    dest: "{{ role_path }}/files/lsp/jdtls/eclipse"
     version: master
+  register: jdtls_clone
+  failed_when:
+    - jdtls_clone.failed
+    - not 'Local modifications exist' in jdtls_clone.msg
 
 - name: Install deps and build JDTLS
   command:
-    chdir: "{{ role_path }}/files/lsp/jdtls"
-    cmd: "./mvnw clean install -DskipTests"
+    chdir: "{{ role_path }}/files/lsp/jdtls/eclipse"
+    cmd: "./mvnw clean verify -DskipTests=true"
 
 - name: Give permissions to java_lsp.sh
   file:
@@ -123,7 +136,11 @@
   git:
     repo: "https://github.com/microsoft/java-debug"
     dest: "{{ role_path }}/files/lsp/jdtls/java-debug"
-    version: master
+    version: main
+  register: javadebug_clone
+  failed_when:
+    - javadebug_clone.failed
+    - not 'Local modifications exist' in javadebug_clone.msg
 
 - name: Install deps and build Java debugger
   command:
@@ -134,7 +151,11 @@
   git:
     repo: "https://github.com/microsoft/vscode-java-test"
     dest: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
-    version: master
+    version: main
+  register: vscodejavatest_clone
+  failed_when:
+    - vscodejavatest_clone.failed
+    - not 'Local modifications exist' in vscodejavatest_clone.msg
 
 - name: Install Java test runner deps
   command:
@@ -151,13 +172,42 @@
     repo: "https://github.com/dgileadi/vscode-java-decompiler"
     dest: "{{ role_path }}/files/lsp/jdtls/vscode-java-decompiler"
     version: master
+  register: vscodejavadecompiler_clone
+  failed_when:
+    - vscodejavadecompiler_clone.failed
+    - not 'Local modifications exist' in vscodejavadecompiler_clone.msg
+
+- name: Create Java Lombok folder
+  file:
+    path: "{{ role_path }}/files/lsp/jdtls/lombok"
+    mode: 0755
+    state: directory
 
 - name: Download Java Lombok jar
   get_url:
     url: "https://projectlombok.org/downloads/lombok.jar"
     dest: "{{ role_path }}/files/lsp/jdtls/lombok/lombok.jar"
 
+- name: Create Java format folder
+  file:
+    path: "{{ role_path }}/files/lsp/jdtls/format"
+    mode: 0755
+    state: directory
+
 - name: Download Google Java Format jar
   get_url:
     url: "https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar"
     dest: "{{ role_path }}/files/lsp/jdtls/format/google-java-format.jar"
+
+- name: Register conf files
+  find:
+    paths: "{{ role_path }}/files"
+    recurse: yes
+  register: nvim_conf
+
+- name: Symlink conf
+  file:
+    src: "{{ item.path }}"
+    dest: "{{ item.path | regex_replace(role_path + '/files/') }}"
+    state: link
+  with_items: "{{ nvim_conf.files }}"

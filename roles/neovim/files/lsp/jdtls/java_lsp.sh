@@ -1,6 +1,6 @@
 #!/bin/sh
 
-JDT_LS_HOME="~/.config/nvim/lsp/jdtls/"
+JDT_LS_HOME="~/.config/nvim/lsp/jdtls"
 
 JDT_LS_LAUNCHER=$(find $JDT_LS_HOME -name "org.eclipse.equinox.launcher_*.jar")
 LOMBOK=$(find $JDT_LS_HOME -name "lombok.jar")
@@ -17,7 +17,7 @@ exec java \
     -javaagent:"$LOMBOK" \
     -Xbootclasspath/a:"$LOMBOK" \
     -jar "$JDT_LS_LAUNCHER" \
-    -configuration "$JDT_LS_HOME/config_mac" \
+    -configuration "$JDT_LS_HOME/eclipse/config_mac" \
     -data "$1" \
     --add-modules=ALL-SYSTEM \
     --add-opens java.base/java.util=ALL-UNNAMED \
