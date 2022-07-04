@@ -1,7 +1,7 @@
 # TODO:
 
  - [x] sdkman
- - [?] neovim role
+ - [ ] neovim role
  - [ ] tmux role
  - [ ] skhd role
  - [ ] yabai role
