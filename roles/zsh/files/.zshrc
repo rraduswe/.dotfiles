@@ -8,6 +8,8 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
   docker
+  docker-compose
+  dotenv
   vi-mode
 )
 source $ZSH/oh-my-zsh.sh
