@@ -4,200 +4,160 @@
     name: neovim
     state: present
 
-- name: Create .config/nvim folder
+- name: Create folders
   file:
-    path: "{{ ansible_user_dir }}/.config/nvim"
+    path: "{{ ansible_user_dir/item }}"
     mode: 0755
     state: directory
+  loop:
+    - ".config/nvim"
+    - ".config/nvim/undodir"
+    - ".config/nvim/lsp"
+    - ".config/nvim/lsp/omnisharp"
+    - ".config/nvim/dap"
+    - ".config/nvim/dap/netcoredbg"
 
-- name: Creating undodir folder
-  file:
-    path: "{{ ansible_user_dir }}/.config/nvim/undodir"
-    mode: 0755
-    state: directory
-
-- name: Creating dap folder
-  file:
-    path: "{{ role_path }}/files/dap"
-    mode: 0755
-    state: directory
-
-- name: Install Go Delve
+- name: Install go delve
   command: "go install github.com/go-delve/delve/cmd/dlv@latest"
 
-- name: Install Go Pls
+- name: Install gopls
   command: "go install golang.org/x/tools/gopls@latest"
 
-- name: Install Go Imports
+- name: Install goimports
   command: "go install golang.org/x/tools/cmd/goimports@latest"
 
-- name: Install Golangci Lint Langserver
+- name: Install golangci-lint-langserver
   command: "go install github.com/nametake/golangci-lint-langserver@latest"
 
-- name: Install Golangci Lint
+- name: Install golangci-lint
   command: "go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.46.2"
 
-- name: Install Node Typescript Langserver
+- name: Install typescript-language-server
   command: "npm install -g typescript-language-server"
 
-- name: Install Vscode extracted Langservers
+- name: Install vscode-langservers-extracted
   command: "npm install -g vscode-langservers-extracted"
 
-- name: Install Tailwindcss Langserver
+- name: Install @tailwindcss/language-server
   command: "npm install -g @tailwindcss/language-server"
 
-- name: Clone Go debug adapter
+- name: Clone go debug adapter
   git:
     repo: "https://github.com/golang/vscode-go"
-    dest: "{{ role_path }}/files/dap/vscode-go"
-    version: master
+    dest: "{{ andible_user_dir }}/.config/nvim/dap/vscode-go"
   register: vscodego_clone
   failed_when:
     - vscodego_clone.failed
     - not 'Local modifications exist' in vscodego_clone.msg
 
-- name: Install Go debug adapter deps
+- name: Install go debug adapter deps
   command:
-    chdir: "{{ role_path }}/files/dap/vscode-go"
+    chdir: "{{ andible_user_dir }}/.config/nvim/dap/vscode-go"
     cmd: "npm install"
 
-- name: Build Go debug adapter
+- name: Build go debug adapter
   command:
-    chdir: "{{ role_path }}/files/dap/vscode-go"
+    chdir: "{{ andible_user_dir }}/.config/nvim/dap/vscode-go"
     cmd: "npm run bundle"
 
-- name: Clone Nodejs debug adapter
+- name: Clone nodejs debug adapter
   git:
     repo: "https://github.com/microsoft/vscode-node-debug2.git"
-    dest: "{{ role_path }}/files/dap/vscode-node-debug2"
-    version: main
+    dest: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-node-debug2"
   register: vscodenodedebug2_clone
   failed_when:
     - vscodenodedebug2_clone.failed
     - not 'Local modifications exist' in vscodenodedebug2_clone.msg
 
-- name: Install Nodejs debug adapter deps
+- name: Install nodejs debug adapter deps
   command:
-    chdir: "{{ role_path }}/files/dap/vscode-node-debug2"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-node-debug2"
     cmd: "npm install"
 
-- name: Build Nodejs debug adapter
+- name: Build nodejs debug adapter
   command:
-    chdir: "{{ role_path }}/files/dap/vscode-node-debug2"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-node-debug2"
     cmd: "npm run build"
 
-- name: Create OmniSharp folder
-  file:
-    path: "{{ role_path }}/files/lsp/omnisharp"
-    mode: 0755
-    state: directory
-
-- name: Download and unarchive OmniSharp
+- name: Download and unarchive omnihharp-roslyn
   unarchive:
     src: "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.0/omnisharp-osx-x64-net6.0.tar.gz"
-    dest: "{{ role_path }}/files/lsp/omnisharp"
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/omnisharp"
     remote_src: yes
-    extra_opts: "--strip=1"
+    extra_opts: "--strip-components=1"
 
-- name: Create .NET debugger folder
-  file:
-    path: "{{ role_path }}/files/dap/netcoredbg"
-    mode: 0755
-    state: directory
-
-- name: Download and unarchive .NET debugger
+- name: Download and unarchive netcoredbg
   unarchive:
     src: "https://github.com/Samsung/netcoredbg/releases/download/2.0.0-915/netcoredbg-osx-amd64.tar.gz"
-    dest: "{{ role_path }}/files/dap/netcoredbg"
+    dest: "{{ ansible_user_dir }}/.config/nvim/dap/netcoredbg"
     remote_src: yes
-    extra_opts: "--strip=1"
+    extra_opts: "--strip-components=1"
 
-- name: Clone JDTLS
+- name: Clone eclipse.jdt.ls
   git:
     repo: "https://github.com/eclipse/eclipse.jdt.ls"
-    dest: "{{ role_path }}/files/lsp/jdtls/eclipse"
-    version: master
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/eclipse"
   register: jdtls_clone
   failed_when:
     - jdtls_clone.failed
     - not 'Local modifications exist' in jdtls_clone.msg
 
-- name: Install deps and build JDTLS
+- name: Install deps and build eclipse.jdt.ls
   command:
-    chdir: "{{ role_path }}/files/lsp/jdtls/eclipse"
+    chdir: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/eclipse"
     cmd: "./mvnw clean verify -DskipTests=true"
 
-- name: Give permissions to java_lsp.sh
-  file:
-    path: "{{ role_path }}/files/lsp/jdtls/java_lsp.sh"
-    mode: 0755
-
-- name: Clone Java debugger
+- name: Clone java-debug
   git:
     repo: "https://github.com/microsoft/java-debug"
-    dest: "{{ role_path }}/files/lsp/jdtls/java-debug"
-    version: main
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/java-debug"
   register: javadebug_clone
   failed_when:
     - javadebug_clone.failed
     - not 'Local modifications exist' in javadebug_clone.msg
 
-- name: Install deps and build Java debugger
+- name: Install deps and build java-debug
   command:
-    chdir: "{{ role_path }}/files/lsp/jdtls/java-debug"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/java-debug"
     cmd: "./mvnw clean install"
 
-- name: Clone Java test runner
+- name: Clone vscode-java-test
   git:
     repo: "https://github.com/microsoft/vscode-java-test"
-    dest: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
-    version: main
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/vscode-java-test"
   register: vscodejavatest_clone
   failed_when:
     - vscodejavatest_clone.failed
     - not 'Local modifications exist' in vscodejavatest_clone.msg
 
-- name: Install Java test runner deps
+- name: Install vscode-java-test deps
   command:
-    chdir: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
+    chdir: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/vscode-java-test"
     cmd: "npm install"
 
-- name: Build Java test runner
+- name: Build vscode-java-test
   command:
-    chdir: "{{ role_path }}/files/lsp/jdtls/vscode-java-test"
+    chdir: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/vscode-java-test"
     cmd: "npm run build-plugin"
 
-- name: Clone Java decompiler jars
+- name: Clone vscode-java-decompiler
   git:
     repo: "https://github.com/dgileadi/vscode-java-decompiler"
-    dest: "{{ role_path }}/files/lsp/jdtls/vscode-java-decompiler"
-    version: master
+    dest: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/vscode-java-decompiler"
   register: vscodejavadecompiler_clone
   failed_when:
     - vscodejavadecompiler_clone.failed
     - not 'Local modifications exist' in vscodejavadecompiler_clone.msg
 
-- name: Create Java Lombok folder
-  file:
-    path: "{{ role_path }}/files/lsp/jdtls/lombok"
-    mode: 0755
-    state: directory
-
-- name: Download Java Lombok jar
+- name: Download lombok.jar
   get_url:
     url: "https://projectlombok.org/downloads/lombok.jar"
-    dest: "{{ role_path }}/files/lsp/jdtls/lombok/lombok.jar"
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/lombok/lombok.jar"
 
-- name: Create Java format folder
-  file:
-    path: "{{ role_path }}/files/lsp/jdtls/format"
-    mode: 0755
-    state: directory
-
-- name: Download Google Java Format jar
+- name: Download google-java-format.jar
   get_url:
     url: "https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar"
-    dest: "{{ role_path }}/files/lsp/jdtls/format/google-java-format.jar"
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/format/google-java-format.jar"
 
 - name: Register conf files
   find:
@@ -211,3 +171,8 @@
     dest: "{{ item.path | regex_replace(role_path + '/files/') }}"
     state: link
   with_items: "{{ nvim_conf.files }}"
+
+- name: Give permissions to java_lsp.sh
+  file:
+    path: "{{ role_path }}/files/lsp/jdtls/java_lsp.sh"
+    mode: 0755
