@@ -1,2 +1,4 @@
+**/.DS_Store
+
 roles/**/files/*
 !roles/neovim/files/lsp/jdtls/java_lsp.sh

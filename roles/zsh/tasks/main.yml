@@ -31,3 +31,23 @@
 
 - name: Source conf
   shell: /bin/zsh -c "source {{ ansible_user_dir }}/.zshrc"
+
+- name: Clone zsh-autosuggestions plugin
+  git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions"
+    dest: "{{ ansible_env.ZSH }}/custom/plugins/zsh-autosuggestions"
+    version: master
+  register: zshautosuggestions_clone
+  failed_when:
+    - zshautosuggestions_clone.failed
+    - not 'Local modifications exist' in zshautosuggestions_clone.msg
+
+- name: Clone zsh-syntax-highlighting plugin
+  git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: "{{ ansible_env.ZSH }}/custom/plugins/zsh-syntax-highlighting"
+    version: master
+  register: zshsyntaxhighlighting_clone
+  failed_when:
+    - zshsyntaxhighlighting_clone.failed
+    - not 'Local modifications exist' in zshsyntaxhighlighting_clone.msg

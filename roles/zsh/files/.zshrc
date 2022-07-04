@@ -1,7 +1,15 @@
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
-plugins=(git)
+plugins=(
+  git
+  brew
+  macos
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  docker
+  vi-mode
+)
 source $ZSH/oh-my-zsh.sh
 
 eval "$(starship init zsh)"
