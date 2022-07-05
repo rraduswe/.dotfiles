@@ -5,6 +5,6 @@
     state: present
 
 - name: Install node lts
-  shell: "source ~/.nvm/nvm.sh && nvm install --lts"
+  shell: "source {{ ansible_user_dir }}/.nvm/nvm.sh && nvm install --lts"
   args:
     executable: /bin/zsh

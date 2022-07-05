@@ -5,6 +5,6 @@
     executable: /bin/bash
 
 - name: Install java lts
-  shell: "source ~/.sdkman/bin/sdkman-init.sh && sdk install java"
+  shell: "source {{ ansible_user_dir }}/.sdkman/bin/sdkman-init.sh && sdk install java"
   args:
     executable: /bin/zsh
