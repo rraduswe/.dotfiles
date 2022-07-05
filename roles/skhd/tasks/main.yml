@@ -6,7 +6,7 @@
 
 - name: Symlink conf
   file:
-    src: ".skhdrc"
+    src: "{{ role_path }}/files/.skhdrc"
     dest: "{{ ansible_user_dir }}/.skhdrc"
     state: link
 

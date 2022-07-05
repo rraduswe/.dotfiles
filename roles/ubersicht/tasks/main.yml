@@ -12,6 +12,6 @@
 
 - name: Symlink conf
   file:
-    src: ".simplebarrc"
+    src: "{{ role_path }}/files/.simplebarrc"
     dest: "{{ ansible_user_dir }}/.simplebarrc"
     state: link

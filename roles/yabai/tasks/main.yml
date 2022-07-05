@@ -6,7 +6,7 @@
 
 - name: Symlink conf
   file:
-    src: ".yabairc"
+    src: "{{ role_path }}/files/.yabairc"
     dest: "{{ ansible_user_dir }}/.yabairc"
     state: link
 

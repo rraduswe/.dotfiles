@@ -1,5 +1,10 @@
 ---
+- name: Install nvm
+  homebrew:
+    name: nvm
+    state: present
+
 - name: Install node lts
-  shell: nvm install --lts
+  shell: "source ~/.nvm/nvm.sh && nvm install --lts"
   args:
     executable: /bin/zsh

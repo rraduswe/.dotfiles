@@ -4,12 +4,7 @@
   args:
     executable: /bin/bash
 
-- name: Source sdkman
-  shell: source ~/.sdkman/bin/sdkman-init.sh
-  args:
-    executable: /bin/zsh
-
-- name: Install Java LTS
-  shell: sdk install java
+- name: Install java lts
+  shell: "source ~/.sdkman/bin/sdkman-init.sh && sdk install java"
   args:
     executable: /bin/zsh

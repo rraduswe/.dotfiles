@@ -2,4 +2,14 @@
 - hosts: localhost
   connection: local
   roles:
+    - misc
     - git
+    - zsh
+    - tmux
+    - nvm
+    - sdkman
+    - kitty
+    - neovim
+    - skhd
+    - yabai
+    - ubersicht

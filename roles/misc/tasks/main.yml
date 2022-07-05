@@ -28,7 +28,6 @@
     - "lsd"
     - "maven"
     - "neofetch"
-    - "nvm"
     - "ripgrep"
     - "rust-analyzer"
     - "rustup-init"
