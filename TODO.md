@@ -1,8 +1,8 @@
 # TODO:
 
- - [x] sdkman
- - [ ] neovim role
- - [ ] tmux role
+ - [ ] sdkman
+ - [x] neovim role
+ - [x] tmux role
  - [ ] skhd role
  - [ ] yabai role
  - [ ] ubersicht role
@@ -12,7 +12,9 @@
  - [ ] zsh-completions
  - [ ] python (pyenv, lsp ... )
  - [ ] git-delta (brew install git-delta)
+ - [ ] git-sync
  - [ ] lazygit (brew tap jesseduffield/lazygit/lazygit OR brew install lazygit)
  - [ ] lazydocker (brew tap jesseduffield/lazygit/lazydocker OR brew install lazydocker)
  - [ ] google chrome (brew install --cask google-chrome)
+ - [ ] google chrome extensions
  - [ ] keycastr (brew install --cask keycastr)

@@ -11,9 +11,13 @@
     state: directory
   loop:
     - ".config/nvim"
+    - ".config/nvim/lua"
+    - ".config/nvim/lua/plugins"
     - ".config/nvim/undodir"
     - ".config/nvim/lsp"
     - ".config/nvim/lsp/omnisharp"
+    - ".config/nvim/lsp/jdtls"
+    - ".config/nvim/lsp/jdtls/eclipse"
     - ".config/nvim/lsp/jdtls/lombok"
     - ".config/nvim/lsp/jdtls/format"
     - ".config/nvim/dap"
@@ -95,19 +99,12 @@
     remote_src: yes
     extra_opts: "--strip-components=1"
 
-- name: Clone eclipse.jdt.ls
-  git:
-    repo: "https://github.com/eclipse/eclipse.jdt.ls"
+- name: Download and unarchive eclipse.jdt.ls
+  unarchive:
+    src: "https://download.eclipse.org/jdtls/snapshots/jdt-language-server-latest.tar.gz"
     dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/eclipse"
-  register: jdtls_clone
-  failed_when:
-    - jdtls_clone.failed
-    - not 'Local modifications exist' in jdtls_clone.msg
-
-- name: Install deps and build eclipse.jdt.ls
-  command:
-    chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/eclipse"
-    cmd: "./mvnw clean verify -DskipTests=true"
+    remote_src: yes
+    extra_opts: "--strip-components=1"
 
 - name: Clone java-debug
   git:
@@ -134,18 +131,18 @@
 
 - name: Install vscode-java-test deps
   command:
-    chdir: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/vscode-java-test"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/vscode-java-test"
     cmd: "npm install"
 
 - name: Build vscode-java-test
   command:
-    chdir: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/vscode-java-test"
+    chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/vscode-java-test"
     cmd: "npm run build-plugin"
 
 - name: Clone vscode-java-decompiler
   git:
     repo: "https://github.com/dgileadi/vscode-java-decompiler"
-    dest: "{{ ansible_user_die }}/.config/nvim/lsp/jdtls/vscode-java-decompiler"
+    dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/vscode-java-decompiler"
   register: vscodejavadecompiler_clone
   failed_when:
     - vscodejavadecompiler_clone.failed
@@ -170,7 +167,7 @@
 - name: Symlink conf
   file:
     src: "{{ item.path }}"
-    dest: "{{ item.path | regex_replace(role_path + '/files/') }}"
+    dest: "{{ ansible_user_dir + '/.config/nvim/' + item.path | regex_replace(role_path + '/files/') }}"
     state: link
   with_items: "{{ nvim_conf.files }}"
 
