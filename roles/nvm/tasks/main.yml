@@ -1,0 +1,5 @@
+---
+- name: Install node lts
+  shell: nvm install --lts
+  args:
+    executable: /bin/zsh

@@ -1,0 +1,15 @@
+---
+- name: Install sdkman
+  shell: curl -s "https://get.sdkman.io" | bash
+  args:
+    executable: /bin/bash
+
+- name: Source sdkman
+  shell: source ~/.sdkman/bin/sdkman-init.sh
+  args:
+    executable: /bin/zsh
+
+- name: Install Java LTS
+  shell: sdk install java
+  args:
+    executable: /bin/zsh

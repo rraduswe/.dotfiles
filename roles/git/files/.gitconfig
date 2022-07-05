@@ -1,0 +1,25 @@
+[user]
+    name = rradu-dev
+    email = rradu08@outlook.com
+
+[core]
+    pager = delta
+    editor = nvim
+
+[interactive]
+    diffFilter = delta --color-only
+[add.interactive]
+    useBuiltin = false
+
+[delta]
+    side-by-side = true
+    line-numbers = true
+    navigate = true
+    light = false
+
+[merge]
+    tool = nvimdiff3
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

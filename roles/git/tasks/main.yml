@@ -1,0 +1,11 @@
+---
+- name: Delete pre existing config
+  file:
+    path: "{{ ansible_user_dir }}/.gitconfig"
+    state: absent
+
+- name: Symlink config
+  file:
+    src: "{{ role_path }}/files/.gitconfig"
+    dest: "{{ ansible_user_dir }}/.gitconfig"
+    state: link

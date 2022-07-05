@@ -1,140 +1,48 @@
 ---
-- name: Tapping koekeishiya
+- name: Tapping formulaes
   homebrew_tap:
-    name: koekeishiya/formulae
+    name: "{{ item }}"
     state: present
+  loop:
+    - "homebrew/cask-fonts"
+    - "koekeishiya/formulae"
 
-- name: Tapping cask-fonts
-  homebrew_tap:
-    name: homebrew/cask-fonts
-    state: present
-
-- name: Install editorconfig
+- name: Install packages
   homebrew:
-    name: editorconfig
+    name: "{{ item }}"
     state: present
+  loop:
+    - "editorconfig"
+    - "fzf"
+    - "git-delta"
+    - "gnu-tar"
+    - "go"
+    - "golang-migrate"
+    - "helm"
+    - "htop"
+    - "jq"
+    - "kompose"
+    - "lazygit"
+    - "lazydocker"
+    - "librdkafka"
+    - "lsd"
+    - "maven"
+    - "neofetch"
+    - "nvm"
+    - "ripgrep"
+    - "rust-analyzer"
+    - "rustup-init"
+    - "starship"
 
-- name: Install fzf
-  homebrew:
-    name: fzf
-    state: present
-
-- name: Install GNU tar
-  homebrew:
-    name: gnu-tar
-    state: present
-
-- name: Install go
-  homebrew:
-    name: go
-    state: present
-
-- name: Install golang-migrate
-  homebrew:
-    name: golang-migrate
-    state: present
-
-- name: Install helm
-  homebrew:
-    name: helm
-    state: present
-
-- name: Install htop
-  homebrew:
-    name: htop
-    state: present
-
-- name: Install jq
-  homebrew:
-    name: jq
-    state: present
-
-- name: Install kompose
-  homebrew:
-    name: kompose
-    state: present
-
-- name: Install librdkafka
-  homebrew:
-    name: librdkafka
-    state: present
-
-- name: Install lsd
-  homebrew:
-    name: lsd
-    state: present
-
-- name: Install maven
-  homebrew:
-    name: maven
-    state: present
-
-- name: Install neofetch
-  homebrew:
-    name: neofetch
-    state: present
-
-- name: Install nvm
-  homebrew:
-    name: nvm
-    state: present
-
-- name: Install ripgrep
-  homebrew:
-    name: ripgrep
-    state: present
-
-- name: Install rust-analyzer
-  homebrew:
-    name: rust-analyzer
-    state: present
-
-- name: Install rustup-init
-  homebrew:
-    name: rustup-init
-    state: present
-
-- name: Install starship
-  homebrew:
-    name: starship
-    state: present
-
-- name: Install discord
+- name: Install apps
   homebrew_cask:
-    name: discord
+    name: "{{ item }}"
     state: present
-
-- name: Install dotnet sdk
-  homebrew_cask:
-    name: dotnet-sdk
-    state: present
-
-- name: Install docker
-  homebrew_cask:
-    name: docker
-    state: present
-
-- name: Install font-hack-nerd-font
-  homebrew_cask:
-    name: font-hack-nerd-font
-    state: present
-
-- name: Install postman
-  homebrew_cask:
-    name: postman
-    state: present
-
-- name: Install sdkman
-  shell: curl -s "https://get.sdkman.io" | bash
-  args:
-    executable: /bin/bash
-
-- name: Sourcs sdkman
-  shell: source ~/.sdkman/bin/sdkman-init.sh
-  args:
-    executable: /bin/zsh
-
-- name: Install Java LTS
-  shell: sdk install java
-  args:
-    executable: /bin/zsh
+  loop:
+    - "discord"
+    - "dotnet-sdk"
+    - "docker"
+    - "font-hack-nerd-font"
+    - "google-chrome"
+    - "keycastr"
+    - "postman"
