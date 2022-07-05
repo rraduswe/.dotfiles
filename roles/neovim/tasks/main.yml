@@ -39,13 +39,19 @@
   command: "go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.46.2"
 
 - name: Install typescript-language-server
-  command: "npm install -g typescript-language-server"
+  shell: "source {{ ansible_user_dir }}/.zshrc && npm install -g typescript-language-server"
+  args:
+    executable: /bin/zsh
 
 - name: Install vscode-langservers-extracted
-  command: "npm install -g vscode-langservers-extracted"
+  shell: "source {{ ansible_user_dir }}/.zshrc && npm install -g vscode-langservers-extracted"
+  args:
+    executable: /bin/zsh
 
 - name: Install @tailwindcss/language-server
-  command: "npm install -g @tailwindcss/language-server"
+  shell: "source {{ ansible_user_dir }}/.zshrc && npm install -g @tailwindcss/language-server"
+  args:
+    executable: /bin/zsh
 
 - name: Clone go debug adapter
   git:
@@ -57,14 +63,18 @@
     - not 'Local modifications exist' in vscodego_clone.msg
 
 - name: Install go debug adapter deps
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-go"
-    cmd: "npm install"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && npm install"
+  args:
+    executable: /bin/zsh
 
 - name: Build go debug adapter
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-go"
-    cmd: "npm run bundle"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && npm run bundle"
+  args:
+    executable: /bin/zsh
 
 - name: Clone nodejs debug adapter
   git:
@@ -76,14 +86,18 @@
     - not 'Local modifications exist' in vscodenodedebug2_clone.msg
 
 - name: Install nodejs debug adapter deps
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-node-debug2"
-    cmd: "npm install"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && npm install"
+  args:
+    executable: /bin/zsh
 
 - name: Build nodejs debug adapter
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/dap/vscode-node-debug2"
-    cmd: "npm run build"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && npm run build"
+  args:
+    executable: /bin/zsh
 
 - name: Download and unarchive omnihharp-roslyn
   unarchive:
@@ -104,7 +118,6 @@
     src: "https://download.eclipse.org/jdtls/snapshots/jdt-language-server-latest.tar.gz"
     dest: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/eclipse"
     remote_src: yes
-    extra_opts: "--strip-components=1"
 
 - name: Clone java-debug
   git:
@@ -116,9 +129,11 @@
     - not 'Local modifications exist' in javadebug_clone.msg
 
 - name: Install deps and build java-debug
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/java-debug"
-    cmd: "./mvnw clean install"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && ./mvnw clean install"
+  args:
+    executable: /bin/zsh
 
 - name: Clone vscode-java-test
   git:
@@ -130,14 +145,18 @@
     - not 'Local modifications exist' in vscodejavatest_clone.msg
 
 - name: Install vscode-java-test deps
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/vscode-java-test"
-    cmd: "npm install"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && npm install"
+  args:
+    executable: /bin/zsh
 
 - name: Build vscode-java-test
-  command:
+  shell:
     chdir: "{{ ansible_user_dir }}/.config/nvim/lsp/jdtls/vscode-java-test"
-    cmd: "npm run build-plugin"
+    cmd: "source {{ ansible_user_dir }}/.zshrc && npm run build-plugin"
+  args:
+    executable: /bin/zsh
 
 - name: Clone vscode-java-decompiler
   git:

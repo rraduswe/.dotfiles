@@ -4,7 +4,25 @@
     name: nvm
     state: present
 
+- name: Register nvm location
+  shell: "brew --prefix nvm"
+  args:
+    executable: /bin/bash
+  register: nvm_location
+
+- name: Create nvm folder
+  file:
+    path: "{{ ansible_user_dir }}/.nvm"
+    mode: 0755
+    state: directory
+
+- name: Copy nvm sh
+  copy:
+    src: "{{ nvm_location.stdout }}/nvm.sh"
+    dest: "{{ ansible_user_dir }}/.nvm/nvm.sh"
+    mode: 0755
+
 - name: Install node lts
   shell: "source {{ ansible_user_dir }}/.nvm/nvm.sh && nvm install --lts"
   args:
-    executable: /bin/zsh
+    executable: /bin/bash

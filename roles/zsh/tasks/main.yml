@@ -32,6 +32,3 @@
   user:
     name: "{{ ansible_user_id }}"
     shell: /bin/zsh
-
-- name: Source conf
-  shell: /bin/zsh -c "source {{ ansible_user_dir }}/.zshrc"

@@ -5,8 +5,6 @@ plugins=(
   git
   brew
   macos
-  zsh-autosuggestions
-  zsh-syntax-highlighting
   docker
   docker-compose
   dotenv
