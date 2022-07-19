@@ -111,3 +111,11 @@ signature.setup({
         border = "rounded"
     }
 })
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+    group = vim.api.nvim_create_augroup('EslintAutogroup', {
+        clear = true
+    }),
+    pattern = { '*.js', '*.ts', '*.tsx' },
+    command = 'EslintFixAll'
+})

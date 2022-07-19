@@ -1,4 +1,5 @@
 local tree = require("nvim-tree")
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 local events = require("nvim-tree.events")
 
 tree.setup {
@@ -9,6 +10,7 @@ tree.setup {
     hijack_cursor = true,
     open_on_setup = false,
     open_on_tab = false,
+    sort_by = "case_sensitive",
     update_cwd = false,
     update_focused_file = {
         enable = false,
@@ -21,7 +23,9 @@ tree.setup {
     },
     filters = {
         dotfiles = false,
-        custom = {}
+        custom = {
+          "^\\.git"
+        }
     },
     git = {
         enable = true,
@@ -38,17 +42,19 @@ tree.setup {
         signcolumn = "yes",
         mappings = {
             custom_only = false,
-            list = {}
+            list = {
+              { key = 'R', cb = tree_cb('refresh') },
+            }
         }
     },
     renderer = {
         add_trailing = false,
         group_empty = false,
         highlight_git = false,
-        highlight_opened_files = "none",
+        highlight_opened_files = "all",
         root_folder_modifier = ":~",
         indent_markers = {
-            enable = true,
+            enable = false,
             icons = {
                 corner = "└ ",
                 edge = "│ ",

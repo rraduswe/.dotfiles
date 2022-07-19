@@ -37,12 +37,15 @@ formatter.setup({
                 }
             end
         },
+        javascript = {
+            prettier
+		    },
         typescript = {
             prettier
         },
-        javascript = {
-            prettier
-		},
+        typescriptreact = {
+          prettier
+        },
         java = {
             function()
                 return {
@@ -62,10 +65,11 @@ formatter.setup({
     }
 })
 
+
 vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('FormatAutogroup', {
         clear = true
     }),
-    pattern = '*.go,*.ts,*js,*.java',
-    command = 'FormatWrite',
+    pattern = { '*.js', '*.ts', '*.tsx', '*.go', '*.java' },
+    command = 'FormatWrite'
 })

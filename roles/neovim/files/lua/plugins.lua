@@ -55,6 +55,11 @@ return packer.startup({
         }
 
         use {
+          "mhartington/formatter.nvim",
+          config = get_config('formatter'),
+        }
+
+        use {
             "mbbill/undotree",
             config = get_config('undotree'),
         }

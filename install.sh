@@ -1,8 +1,5 @@
 #!/bin/sh
 
-echo "Installing Xcode tools.."
-xcode-select --install
-
 if ! [ -x "$(command -v brew)" ]; then
     echo "Installing Brew.."
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
