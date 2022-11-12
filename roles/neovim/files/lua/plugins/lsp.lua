@@ -101,7 +101,9 @@ lspconfig.eslint.setup{}
 
 lspconfig.golangci_lint_ls.setup{}
 
-lspconfig.jsonls.setup {}
+lspconfig.jsonls.setup{}
+
+lspconfig.clangd.setup{}
 
 
 local signature = require("lsp_signature")

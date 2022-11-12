@@ -20,7 +20,6 @@ formatter.setup({
                 return {
                     exe = "gofmt",
                     args = {
-                        "-w",
                         vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
                     },
                     stdin = true
@@ -30,12 +29,19 @@ formatter.setup({
                 return {
                     exe = "goimports",
                     args = {
-                        "-w",
                         vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
                     },
                     stdin = true
                 }
             end
+        },
+        rust = {
+          function()
+            return {
+              exe = "rustfmt",
+              stdin = true
+            }
+          end
         },
         javascript = {
             prettier
@@ -70,6 +76,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('FormatAutogroup', {
         clear = true
     }),
-    pattern = { '*.js', '*.ts', '*.tsx', '*.go', '*.java' },
+    pattern = { '*.js', '*.ts', '*.tsx', '*.go', '*.rs', '*.java' },
     command = 'FormatWrite'
 })
